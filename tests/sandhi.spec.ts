@@ -90,10 +90,10 @@ describe('Reduplication testing', () => {
 describe('Voiced final consonant testing', () => {
   const cli = new Client();
 
-  const ta = cli.processTonal('teg');
+  const ta = cli.processTonal('tig');
   test('check if it handles sandhi final consonants', () => {
     expect(ta.soundSequences[0].map((it) => it.toString()).join('')).toEqual(
-      'teg'
+      'tig'
     );
   });
 });
@@ -102,14 +102,14 @@ describe('-ik ending testing', () => {
   const cli = new Client();
 
   const ta1 = cli.processTonal('tik');
-  test('check if it handles sandhi rime, tik of tikw, tikw of tekk', () => {
+  test('check if it handles sandhi rime, tik of tikw, tikw of tikk', () => {
     expect(ta1.soundSequences[0].map((it) => it.toString()).join('')).toEqual(
       'tik'
     );
   });
 
   const ta2 = cli.processTonal('chik');
-  test('check if it handles sandhi final consonants, chik of chikf, chikf ot chit', () => {
+  test('check if it handles sandhi final consonants, chik of chikf, chikf of chit', () => {
     expect(ta2.soundSequences[0].map((it) => it.toString()).join('')).toEqual(
       'chik'
     );

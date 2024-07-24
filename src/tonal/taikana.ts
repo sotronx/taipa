@@ -136,17 +136,17 @@ export function composeTaiKana(morphemes: TonalUncombiningMorpheme[]) {
     const nslz = morphemes[i].sounds.filter(
       (it) => it.name === TonalSpellingTags.nasalization
     );
-    const finalsForEToKanaIE = stpFnl
+    const finalsForIToKanaIE = stpFnl
       .filter(
         (it) =>
           it.name === TonalSpellingTags.stopFinalConsonant &&
-          finalsForEKegekkeggeng.includes(it.toString())
+          finalsForIKigikkigging.includes(it.toString())
       )
       .concat(
         nslFnl.filter(
           (it) =>
             it.name === TonalSpellingTags.nasalFinalConsonant &&
-            finalsForEKegekkeggeng.includes(it.toString())
+            finalsForIKigikkigging.includes(it.toString())
         )
       );
 
@@ -187,71 +187,57 @@ export function composeTaiKana(morphemes: TonalUncombiningMorpheme[]) {
               }
             }
           } else {
-            if (
-              mdls[j].toString() === TonalLetterTags.e &&
-              nslFnl.length + stpFnl.length > 0 &&
-              nslz.length == 0 &&
-              finalsForEToKanaIE.length == 1
-            ) {
-              // if there is a final, letter i should be used to retrieve an initial kana
-              // in the case of ~eng or -ek
-              if (mdls.length == 1) {
-                kanas[i] += handleCombiningDotBelowOverline(
-                  initl[0].toString(),
-                  TonalLetterTags.i
-                );
-              } else if (
-                mdls.length == 2 &&
-                mdls[0].toString() === TonalLetterTags.i
-              ) {
-                // in case of -ieng
-                // kanas[i] += getSmallKanaVowel(KanaLetterTags.i);
-              }
-              if (mdls[j].toString() === TonalLetterTags.e) {
-                // for letter e, an small kana e is appended to the preceding i-ending initial
+            if (j > 0) {
+              if (stpFnl.length == 1) {
+                // more that one vowels. e.g. goehh
                 kanas[i] += getSmallKanaVowel(mdls[j].toString());
-              }
-            } else {
-              if (j > 0) {
-                if (stpFnl.length == 1) {
-                  // more that one vowels. e.g. goehh
+              } else {
+                if (j == 1 && mdls.length == 3) {
+                  kanas[i] += getSmallKanaVowel(mdls[j].toString());
+                } else if (j == 1 && mdls.length == 2 && nslFnl.length == 1) {
                   kanas[i] += getSmallKanaVowel(mdls[j].toString());
                 } else {
-                  if (j == 1 && mdls.length == 3) {
-                    kanas[i] += getSmallKanaVowel(mdls[j].toString());
-                  } else if (j == 1 && mdls.length == 2 && nslFnl.length == 1) {
-                    kanas[i] += getSmallKanaVowel(mdls[j].toString());
-                  } else {
-                    const kn = hiraganaKatakana.get(mdls[j].toString());
-                    if (kn && kn[1]) kanas[i] += kn[1];
-                  }
-                }
-              } else {
-                // the first vowel. e.g. gehh, goehh
-                kanas[i] += handleCombiningDotBelowOverline(
-                  initl[0].toString(),
-                  mdls[j].toString()
-                );
-
-                if (
-                  nslFnl.length == 0 &&
-                  mdls.length == 1 &&
-                  stpFnl.length == 0
-                ) {
-                  // open syllables with an initial
                   const kn = hiraganaKatakana.get(mdls[j].toString());
-                  if (kn && kn[1]) {
-                    // replicate the vowel and append it
-                    kanas[i] += kn[1];
-                  }
-                } else if (
-                  nslFnl.length == 0 &&
-                  mdls.length == 1 &&
-                  stpFnl.length == 1 &&
-                  neutralFinalConsonantsTonal.includes(stpFnl[0].toString())
-                ) {
-                  kanas[i] += getSmallKanaVowel(mdls[j].toString());
+                  if (kn && kn[1]) kanas[i] += kn[1];
                 }
+              }
+            } else {
+              // the first vowel. e.g. gehh, goehh
+              kanas[i] += handleCombiningDotBelowOverline(
+                initl[0].toString(),
+                mdls[j].toString()
+              );
+
+              if (
+                nslFnl.length == 0 &&
+                mdls.length == 1 &&
+                stpFnl.length == 0
+              ) {
+                // open syllables with an initial
+                const kn = hiraganaKatakana.get(mdls[j].toString());
+                if (kn && kn[1]) {
+                  // replicate the vowel and append it
+                  kanas[i] += kn[1];
+                }
+              } else if (
+                nslFnl.length == 0 &&
+                mdls.length == 1 &&
+                stpFnl.length == 1 &&
+                neutralFinalConsonantsTonal.includes(stpFnl[0].toString())
+              ) {
+                kanas[i] += getSmallKanaVowel(mdls[j].toString());
+              } else if (
+                mdls[j].toString() === TonalLetterTags.i &&
+                mdls.length == 1 &&
+                nslz.length == 0 &&
+                stpFnl.length == 1 &&
+                finalsForIToKanaIE.length == 1 &&
+                !neutralFinalConsonantsTonal.includes(stpFnl[0].toString())
+              ) {
+                // in case of syllables -ik and -ikk with an initial.
+                // an extra small kana e will be appended
+                kanas[i] += getSmallKanaVowel(TonalLetterTags.e);
+                // console.log('medials>' + mdls + ', finals>' + stpFnl + ', ' + kanas);
               }
             }
           }
@@ -291,20 +277,18 @@ export function composeTaiKana(morphemes: TonalUncombiningMorpheme[]) {
               // get small kana for 3rd vowel
               kanas[i] += getSmallKanaVowel(mdls[j].toString());
             } else if (
-              j == 0 &&
-              mdls[j].toString() === TonalLetterTags.e &&
-              nslFnl.length + stpFnl.length > 0 &&
+              mdls[j].toString() === TonalLetterTags.i &&
+              mdls.length == 1 &&
               nslz.length == 0 &&
-              finalsForEToKanaIE.length == 1
+              stpFnl.length == 1 &&
+              finalsForIToKanaIE.length == 1
             ) {
-              // if there is a final, letter i should be used to retrieve an extra medial kana
-              // in the case of ~eng or -ek
+              // in case of syllables ik and ikk without an initial
               const kn = hiraganaKatakana.get(TonalLetterTags.i);
               if (kn) kanas[i] += kn[1];
-              if (mdls[j].toString() === TonalLetterTags.e) {
-                // for letter e, a small kana e is appended to the preceding i-
-                kanas[i] += getSmallKanaVowel(mdls[j].toString());
-              }
+              // an extra small kana e will be appended
+              kanas[i] += getSmallKanaVowel(TonalLetterTags.e);
+              // console.log('medials>' + mdls + ', finals>' + stpFnl + ', ' + kanas);
             } else {
               kanas[i] += got[1];
               kanas[i] += getReplicatedKanaVowel(
@@ -552,7 +536,7 @@ const mappingMedial = new Map<string, string[] | undefined>()
     TonalLetterTags.ur,
     hiraganaKatakana.get(KanaLetterTags.w + KanaLetterTags.o)
   )
-  .set(TonalLetterTags.ar, hiraganaKatakana.get(KanaLetterTags.e))
+  .set(TonalLetterTags.ea, hiraganaKatakana.get(KanaLetterTags.e))
   .set(
     TonalLetterTags.m,
     hiraganaKatakana.get(KanaLetterTags.m + KanaLetterTags.u)
@@ -688,7 +672,7 @@ const mappingNasalization = new Map<string, string>()
   .set(TonalLetterTags.p + TonalLetterTags.e, '㋬' + '\u{309a}') // ㋬゚
   .set(TonalLetterTags.p + TonalLetterTags.o, '㋭' + '\u{309a}'); // ㋭゚
 
-const finalsForEKegekkeggeng = [
+const finalsForIKigikkigging = [
   TonalLetterTags.k.toString(),
   TonalLetterTags.g.toString(),
   TonalLetterTags.kk.toString(),

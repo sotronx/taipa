@@ -192,7 +192,7 @@ describe('Uncombining form testing', () => {
     new TonalUncombiningForms([])
   );
   test('check the uncombining form, tikw to tekk, changed rime', () => {
-    expect(ms1[0].getForms()[0].literal).toEqual('tekk');
+    expect(ms1[0].getForms()[0].literal).toEqual('tikk');
   });
 });
 

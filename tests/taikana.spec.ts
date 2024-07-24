@@ -206,7 +206,7 @@ describe('Taiwanese kana testing, ur', () => {
 describe('Taiwanese kana testing, e and er', () => {
   const cli = new Client();
 
-  const ta1 = cli.processTonal('ek');
+  const ta1 = cli.processTonal('ik');
   test('taikanas', () => {
     expect(ta1.blockSequences[0]).toEqual('イェㇰ⤆');
   });
@@ -216,7 +216,7 @@ describe('Taiwanese kana testing, e and er', () => {
     expect(ta2.blockSequences[0]).toEqual('イン');
   });
 
-  const ta4 = cli.processTonal('kek');
+  const ta4 = cli.processTonal('kik');
   test('taikanas', () => {
     expect(ta4.blockSequences[0]).toEqual('キェㇰ⤆');
   });
@@ -241,7 +241,7 @@ describe('Taiwanese kana testing, e and er', () => {
     expect(ta8.blockSequences[0]).toEqual('ケヌ⎸');
   });
 
-  const ta9 = cli.processTonal('liwek');
+  const ta9 = cli.processTonal('liwik');
   test('taikanas', () => {
     expect(ta9.blockSequences[0]).toEqual('リイ⎝イェㇰ⤆');
   });

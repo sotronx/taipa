@@ -9,7 +9,7 @@ import {
   TonalDesinenceInflection,
 } from '../src/change/metaplasm';
 import { createTonalInflectionLexeme } from '../src/change/creator';
-import { TonalUncombiningForms } from '../src/unchange/metaplasm';
+import { TonalStandaloneForms } from '../src/unchange/metaplasm';
 import {
   extractTones,
   getToneEndingNumber,
@@ -145,7 +145,7 @@ describe('Tonal testing', () => {
 describe('Tonal testing', () => {
   const morphemes1 = tonalLemmatizationAnalyzer.morphAnalyze(
     'ginfnay',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
   test('check the tonal of the first syllable', () => {
     expect(morphemes1[0].allomorph.toString()).toEqual(TonalLetterTags.f);
@@ -161,7 +161,7 @@ describe('Tonal testing', () => {
 describe('Tonal testing', () => {
   const morphemes1 = tonalLemmatizationAnalyzer.morphAnalyze(
     'kamxmay',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
   test('check the tonal of the first syllable', () => {
     expect(morphemes1[0].allomorph.toString()).toEqual(TonalLetterTags.x);

@@ -1,7 +1,7 @@
 import { MatchedPattern, Morpheme } from '../unit';
 import { MorphemeMaker } from '../maker';
 import {
-  freeAllomorphUncombiningRules,
+  freeAllomorphStandaloneRules,
   checkedAllomorphs,
   freeAllomorphs,
   ZeroAllomorph,
@@ -9,7 +9,7 @@ import {
   TonalLetterTags,
   lowerLettersTonal,
   TonalSpellingTags,
-  uncombiningRulesAy,
+  standaloneRulesAy,
   CheckedAllomorph,
   Allomorph,
   freeToneLettersTonal,
@@ -41,16 +41,16 @@ import {
 } from '../tonal/collections';
 import {
   LastSyllableForms,
-  PrecedingAyUncombining,
-  PrecedingExUncombining,
-  TonalUncombiningForms,
-  TransfixUncombining,
-  UncombiningFormsIetfIetwToEkEkk,
+  PrecedingAyStandalone,
+  PrecedingExStandalone,
+  TonalStandaloneForms,
+  TransfixStandalone,
+  StandaloneFormsIetfIetwToIkIkk,
 } from './metaplasm';
 import {
   TonalCombiningMetaplasm,
   RemovingEpenthesisOfAy,
-  TonalUncombiningMetaplasm,
+  TonalStandaloneMetaplasm,
 } from '../metaplasm';
 import { TonalSyllable } from './unit';
 
@@ -177,10 +177,10 @@ export function syllabifyTonal(
       }
 
       // tone change of free allomorphs
-      const rulesFa = freeAllomorphUncombiningRules.get(letters[i].literal);
+      const rulesFa = freeAllomorphStandaloneRules.get(letters[i].literal);
       const tnlsFa = !rulesFa ? [] : rulesFa.map((x) => x.toString());
       // tone sandhi of ay
-      const rulesAy = uncombiningRulesAy.get(letters[i].literal);
+      const rulesAy = standaloneRulesAy.get(letters[i].literal);
       const tnlsAy = !rulesAy ? [] : rulesAy.map((x) => x.toString());
       // merge the above twoo arrays
       const tnls = tnlsFa.concat(
@@ -254,7 +254,7 @@ export function syllabifyTonal(
         // Object.assign(matchedLtrs, ltrs);
       } else if (!freeToneLettersTonal.includes(letters[i].literal)) {
         // free first tone without a free tonal
-        const rules = freeAllomorphUncombiningRules.get(TonalLetterTags.zero);
+        const rules = freeAllomorphStandaloneRules.get(TonalLetterTags.zero);
         const tnls = !rules ? [] : rules;
         for (let t of tnls) {
           // append second tonal letter
@@ -339,7 +339,7 @@ export function syllabifyTonal(
 }
 
 /** A syllable and its uncombining forms. */
-export class TonalUncombiningMorpheme extends Morpheme {
+export class TonalStandaloneMorpheme extends Morpheme {
   syllable: TonalSyllable;
   allomorph: Allomorph;
   private metaplasm: TonalCombiningMetaplasm;
@@ -449,28 +449,28 @@ export class TonalUncombiningMorpheme extends Morpheme {
   }
 }
 
-export class TonalUncombiningMorphemeMaker extends MorphemeMaker {
+export class TonalStandaloneMorphemeMaker extends MorphemeMaker {
   private sandhiFinals = new Array<AlphabeticLetter>();
   private sandhiFinalTonals = new Array<{
     index: number;
     letters: AlphabeticLetter[];
   }>();
-  private metaplasm: TonalUncombiningMetaplasm;
+  private metaplasm: TonalStandaloneMetaplasm;
 
-  constructor(metaplasm: TonalUncombiningMetaplasm) {
+  constructor(metaplasm: TonalStandaloneMetaplasm) {
     super();
     this.metaplasm = metaplasm;
   }
 
   protected createArray() {
-    return new Array<TonalUncombiningMorpheme>();
+    return new Array<TonalStandaloneMorpheme>();
   }
 
   protected createMorpheme(
     matched: MatchedPattern,
-    metaplasm: TonalUncombiningMetaplasm
+    metaplasm: TonalStandaloneMetaplasm
   ) {
-    const tum: TonalUncombiningMorpheme = new TonalUncombiningMorpheme(
+    const tum: TonalStandaloneMorpheme = new TonalStandaloneMorpheme(
       new TonalSyllable(matched.letters),
       matched.pattern,
       metaplasm
@@ -479,7 +479,7 @@ export class TonalUncombiningMorphemeMaker extends MorphemeMaker {
   }
 
   private isCombiningAy(syllables: MatchedPattern[]) {
-    const keysAy = Array.from(uncombiningRulesAy.keys());
+    const keysAy = Array.from(standaloneRulesAy.keys());
 
     if (syllables.length >= 2) {
       const nslFnlLast2nd = syllables[syllables.length - 2].pattern.filter(
@@ -644,8 +644,8 @@ export class TonalUncombiningMorphemeMaker extends MorphemeMaker {
     return false;
   }
 
-  /** Check if ~ek or ~ekk available for the ~iet syllable. */
-  private isEKekkAvailableRimeIet(syllables: MatchedPattern[]) {
+  /** Check if ~ik or ~ikk available for the ~iet syllable. */
+  private isIKIkkAvailableRimeIet(syllables: MatchedPattern[]) {
     if (syllables.length >= 2) {
       const vs = syllables[syllables.length - 2].pattern.filter(
         (i) => i.name === TonalSpellingTags.vowel
@@ -666,9 +666,11 @@ export class TonalUncombiningMorphemeMaker extends MorphemeMaker {
         (ts[0].toString() === TonalLetterTags.f ||
           ts[0].toString() === TonalLetterTags.w)
       ) {
-        // TODO: check if the uncombining forms present in syllable table.
+        // TODO: check if the standalone forms present in syllable table.
         return true;
       }
+    } else if (syllables.length == 1) {
+      // standalone syllables ietw and ietf should be handled in this block
     }
     return false;
   }
@@ -685,7 +687,7 @@ export class TonalUncombiningMorphemeMaker extends MorphemeMaker {
 
   protected postprocess(
     matched: MatchedPattern[]
-  ): Array<TonalUncombiningMorpheme> {
+  ): Array<TonalStandaloneMorpheme> {
     const morphemes = this.createArray();
 
     for (let i = 0; i < matched.length; i++) {
@@ -693,7 +695,7 @@ export class TonalUncombiningMorphemeMaker extends MorphemeMaker {
 
       if (this.isCombiningAy(matched) && matched.length == 2) {
         // ~fa, ~xa, fay, or ~xay. only 2 syllables
-        morphemes.push(this.createMorpheme(ptn, new PrecedingAyUncombining()));
+        morphemes.push(this.createMorpheme(ptn, new PrecedingAyStandalone()));
       } else if (
         this.isCombiningAy(matched) &&
         (matched.length == 3 || matched.length == 4)
@@ -701,15 +703,13 @@ export class TonalUncombiningMorphemeMaker extends MorphemeMaker {
         // ~fa, ~xa, fay, or ~xay. more than 2 syllables
         if (i == matched.length - 2 || i == matched.length - 1)
           // the last 2 syllables
-          morphemes.push(
-            this.createMorpheme(ptn, new PrecedingAyUncombining())
-          );
+          morphemes.push(this.createMorpheme(ptn, new PrecedingAyStandalone()));
         else if (i == matched.length - 3)
           // the first syllable of a 3-syllable word or the 2nd syllable of a 4-syllable word
           morphemes.push(
             this.createMorpheme(
               ptn,
-              new TonalUncombiningForms(matched[i + 1].pattern)
+              new TonalStandaloneForms(matched[i + 1].pattern)
             )
           );
         else if (matched.length == 4 && i == matched.length - 4)
@@ -717,12 +717,12 @@ export class TonalUncombiningMorphemeMaker extends MorphemeMaker {
           morphemes.push(
             this.createMorpheme(
               ptn,
-              new TonalUncombiningForms(matched[i + 1].pattern)
+              new TonalStandaloneForms(matched[i + 1].pattern)
             )
           );
       } else if (this.isCombiningEx(matched) && matched.length == 2) {
         // ~ex
-        morphemes.push(this.createMorpheme(ptn, new PrecedingExUncombining()));
+        morphemes.push(this.createMorpheme(ptn, new PrecedingExStandalone()));
       } else if (this.isTriplet(matched)) {
         // triplet construction. pass the last syllable as an argument
         morphemes.push(
@@ -734,7 +734,7 @@ export class TonalUncombiningMorphemeMaker extends MorphemeMaker {
           this.createMorpheme(ptn, new LastSyllableForms(matched[1].pattern))
         );
       } else if (this.isTransfixInflection(matched)) {
-        morphemes.push(this.createMorpheme(ptn, new TransfixUncombining()));
+        morphemes.push(this.createMorpheme(ptn, new TransfixStandalone()));
       } else {
         if (i < matched.length - 1) {
           // when the target syllable is not the last one in a word.
@@ -742,7 +742,7 @@ export class TonalUncombiningMorphemeMaker extends MorphemeMaker {
           morphemes.push(
             this.createMorpheme(
               ptn,
-              new TonalUncombiningForms(matched[i + 1].pattern)
+              new TonalStandaloneForms(matched[i + 1].pattern)
             )
           );
         } else {
@@ -750,10 +750,10 @@ export class TonalUncombiningMorphemeMaker extends MorphemeMaker {
           // the metaplasm argument would be either TonalUncombiningForms or PhrasalVerbParticleUncombining
           morphemes.push(this.createMorpheme(ptn, this.metaplasm));
         }
-        if (this.isEKekkAvailableRimeIet(matched) && i < matched.length - 1) {
+        if (this.isIKIkkAvailableRimeIet(matched) && i < matched.length - 1) {
           const forms = this.createMorpheme(
             ptn,
-            new UncombiningFormsIetfIetwToEkEkk()
+            new StandaloneFormsIetfIetwToIkIkk()
           ).getForms();
           if (forms && forms.length == 1) {
             morphemes[i].addForms(forms);

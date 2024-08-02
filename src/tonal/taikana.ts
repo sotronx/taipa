@@ -14,7 +14,7 @@ import {
 } from '../kana/kanares';
 import { Sound } from '../unit';
 import { fourthFinalConsonants } from './collections';
-import { TonalUncombiningMorpheme } from '../unchange/morpheme';
+import { TonalStandaloneMorpheme } from '../unchange/morpheme';
 import { PseudoUnicodeEncoding } from './tonesets';
 
 const combiningOverline = '\u0305';
@@ -107,7 +107,7 @@ function getSmallKanaVowel(medial: string) {
   return '';
 }
 
-export function composeTaiKana(morphemes: TonalUncombiningMorpheme[]) {
+export function composeTaiKana(morphemes: TonalStandaloneMorpheme[]) {
   let kanaSeqs: string[] = [];
   let kanas: string[] = new Array(morphemes.length);
   let kanas4thToneWoArrow = '';

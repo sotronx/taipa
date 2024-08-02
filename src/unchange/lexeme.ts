@@ -1,4 +1,4 @@
-import { TonalUncombiningMorpheme } from './morpheme';
+import { TonalStandaloneMorpheme } from './morpheme';
 import { Lexeme } from '../unit';
 import { FreeAllomorph, CheckedAllomorph, Allomorph } from '../tonal/tonalres';
 import { TonalLemmatization } from './metaplasm';
@@ -17,7 +17,7 @@ export class TonalLemmatizationLexeme extends Lexeme {
   private endingInflectional: InflectionalEnding;
 
   constructor(
-    morphemes: Array<TonalUncombiningMorpheme>,
+    morphemes: Array<TonalStandaloneMorpheme>,
     metaplasm: TonalLemmatization
   ) {
     super();
@@ -75,11 +75,11 @@ export class TonalLemmatizationLexemeMaker extends LexemeMaker {
     super();
   }
 
-  makeLexemes(morphemes: Array<TonalUncombiningMorpheme>) {
+  makeLexemes(morphemes: Array<TonalStandaloneMorpheme>) {
     return this.make(morphemes);
   }
 
-  protected make(morphemes: Array<TonalUncombiningMorpheme>) {
+  protected make(morphemes: Array<TonalStandaloneMorpheme>) {
     return new TonalLemmatizationLexeme(morphemes, new TonalLemmatization());
   }
 }

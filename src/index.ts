@@ -40,7 +40,7 @@ export { insertToFollowingSyllable } from './change/inserter';
 export { mutateFinalConsonantOfPrecedingSyllable } from './change/mutator';
 
 export { TonalCombiningMorpheme } from './change/morpheme';
-export { TonalUncombiningMorpheme } from './unchange/morpheme';
+export { TonalStandaloneMorpheme } from './unchange/morpheme';
 export { TonalInflectionLexeme, TonalInsertionLexeme } from './change/lexeme';
 export { TonalLemmatizationLexeme } from './unchange/lexeme';
 export {
@@ -62,7 +62,7 @@ export {
   TonalDesinenceInflection,
   TonalCombiningForms,
 } from './change/metaplasm';
-export { TonalUncombiningForms } from './unchange/metaplasm';
+export { TonalStandaloneForms } from './unchange/metaplasm';
 
 export { syllableCompositions } from './tonal/soundgen';
 
@@ -94,7 +94,7 @@ export {
   getLetterSoundPairsSyllabic,
   analyzeIntoSequence,
   analyzeIntoSyllables,
-  getUncombiningForms,
+  getStandaloneForms,
   getLemmas,
   pairsToString,
   getStem,

@@ -1,5 +1,5 @@
 import { tonalPositionalSounds, lowerLettersTonal } from './tonalres';
-import { TonalUncombiningMorpheme } from '../unchange/morpheme';
+import { TonalStandaloneMorpheme } from '../unchange/morpheme';
 import { composeTaiKana } from './taikana';
 
 export function checkNumberOfLetterTonal() {
@@ -9,7 +9,7 @@ export function checkNumberOfLetterTonal() {
 }
 
 /** Get Taiwanese Kana blocks. */
-export function getBlocks(morphemes: TonalUncombiningMorpheme[]) {
+export function getBlocks(morphemes: TonalStandaloneMorpheme[]) {
   const sequences: string[] = composeTaiKana(morphemes);
   return sequences;
 }

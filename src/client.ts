@@ -6,7 +6,7 @@ import { getKanaBlocks, checkNumberOfLettersKana } from './kana/init';
 import { KanaUncombiningMorpheme } from './kana/morpheme';
 import { kanaLemmatizationAnalyzer } from './kana/analyzer';
 import { Word, Sound } from './unit';
-import { TonalUncombiningForms } from './unchange/metaplasm';
+import { TonalStandaloneForms } from './unchange/metaplasm';
 
 export class TokenAnalysis {
   /** Analyzed token. */
@@ -50,7 +50,7 @@ export class Client {
     let ta: TokenAnalysis = new TokenAnalysis();
     if (str) {
       const tla = tonalLemmatizationAnalyzer;
-      const morphemes = tla.morphAnalyze(str, new TonalUncombiningForms([]));
+      const morphemes = tla.morphAnalyze(str, new TonalStandaloneForms([]));
       const lexeme: TonalLemmatizationLexeme = tla.lexAnalyze(morphemes);
       ta.word = lexeme.word;
       ta.lemmas = lexeme.getLemmas();

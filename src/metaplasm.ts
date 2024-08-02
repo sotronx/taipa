@@ -37,7 +37,7 @@ export class RemovingNasalizationOfAy extends TonalCombiningMetaplasm {}
 
 export class KanaCombiningMetaplasm extends Metaplasm {}
 
-export class TonalUncombiningMetaplasm extends Metaplasm {
+export class TonalStandaloneMetaplasm extends Metaplasm {
   apply(sounds: Array<Sound>, allomorph: Allomorph): Array<TonalSyllable> {
     return [];
   }

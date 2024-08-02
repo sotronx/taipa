@@ -2,8 +2,8 @@ import { Client } from '../src/client';
 import { TonalLetterTags } from '../src/tonal/tonalres';
 import { TokenAnalysis } from '../src/client';
 import { tonalLemmatizationAnalyzer } from '../src/unchange/analyzer';
-import { TonalUncombiningMorpheme } from '../src/unchange/morpheme';
-import { TonalUncombiningForms } from '../src/unchange/metaplasm';
+import { TonalStandaloneMorpheme } from '../src/unchange/morpheme';
+import { TonalStandaloneForms } from '../src/unchange/metaplasm';
 
 describe('Sandhi final testing, stop final, checked tonal', () => {
   const cli = new Client();
@@ -62,10 +62,10 @@ describe('Sandhi final testing, stop final, checked tonal', () => {
 });
 
 describe('Sandhi final testing, stop final, checked tonal', () => {
-  const mfs: TonalUncombiningMorpheme[] =
+  const mfs: TonalStandaloneMorpheme[] =
     tonalLemmatizationAnalyzer.morphAnalyze(
       'habwliy',
-      new TonalUncombiningForms([])
+      new TonalStandaloneForms([])
     );
   const letterSeqs = mfs.map((x) => x.sounds);
   test('check the stop final', () => {

@@ -5,12 +5,12 @@ import {
 import { AlphabeticGrapheme, GraphemeMaker } from '../unit';
 import { lowerLettersTonal } from '../tonal/tonalres';
 import {
-  TonalUncombiningMorphemeMaker,
-  TonalUncombiningMorpheme,
+  TonalStandaloneMorphemeMaker,
+  TonalStandaloneMorpheme,
 } from './morpheme';
 import { TonalSoundUnchangingMorphemeMaker } from '../unchange/morpheme';
-import { TonalUncombiningMetaplasm } from '../metaplasm';
-import { TonalUncombiningForms } from './metaplasm';
+import { TonalStandaloneMetaplasm } from '../metaplasm';
+import { TonalStandaloneForms } from './metaplasm';
 
 /**
  * Analyzes a string into morphemes. Morphological analysis.
@@ -40,7 +40,7 @@ export const tonalLemmatizationAnalyzer = {
    */
   morphAnalyze(
     x: string | Array<AlphabeticGrapheme>,
-    metaplasm: TonalUncombiningMetaplasm
+    metaplasm: TonalStandaloneMetaplasm
   ) {
     let gs: AlphabeticGrapheme[] = [];
     if (typeof x == 'object') {
@@ -49,7 +49,7 @@ export const tonalLemmatizationAnalyzer = {
       gs = graphAnalyzeTonal(x);
     }
 
-    const mm = new TonalUncombiningMorphemeMaker(metaplasm);
+    const mm = new TonalStandaloneMorphemeMaker(metaplasm);
     return mm.makeMorphemes(gs);
   },
 
@@ -58,13 +58,13 @@ export const tonalLemmatizationAnalyzer = {
    * @param x A string or uncombining morphemes
    */
   lexAnalyze(
-    x: string | Array<TonalUncombiningMorpheme>
+    x: string | Array<TonalStandaloneMorpheme>
   ): TonalLemmatizationLexeme {
-    let ms: Array<TonalUncombiningMorpheme> = [];
+    let ms: Array<TonalStandaloneMorpheme> = [];
     if (typeof x == 'object') {
       ms = x;
     } else if (typeof x == 'string') {
-      ms = this.morphAnalyze(x, new TonalUncombiningForms([]));
+      ms = this.morphAnalyze(x, new TonalStandaloneForms([]));
     }
 
     const lm = new TonalLemmatizationLexemeMaker();

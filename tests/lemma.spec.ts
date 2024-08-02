@@ -4,7 +4,7 @@ import {
   graphAnalyzeTonal,
 } from '../src/unchange/analyzer';
 import { lemmatize } from '../src/unchange/lemmatizer';
-import { TonalUncombiningForms } from '../src/unchange/metaplasm';
+import { TonalStandaloneForms } from '../src/unchange/metaplasm';
 import { graphAnalyzeKana } from '../src/kana/analyzer';
 
 describe('Lemma testing', () => {
@@ -34,110 +34,110 @@ describe('Lemma testing', () => {
   });
 });
 
-describe('Uncombining form testing, reduplication', () => {
+describe('Standalone form testing, reduplication', () => {
   const ms1 = tonalLemmatizationAnalyzer.morphAnalyze(
     'angxxangzangx',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form, triplet', () => {
+  test('check the standalone form, triplet', () => {
     expect(ms1[0].getForms()[0].literal).toEqual('angx');
   });
 
-  test('check the uncombining form, triplet', () => {
+  test('check the standalone form, triplet', () => {
     expect(ms1[1].getForms()[0].literal).toEqual('angx');
   });
 
   const ms2 = tonalLemmatizationAnalyzer.morphAnalyze(
     'angzangx',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form, doublet', () => {
+  test('check the standalone form, doublet', () => {
     expect(ms2[0].getForms()[0].literal).toEqual('angx');
   });
 
   const ms3 = tonalLemmatizationAnalyzer.morphAnalyze(
     'juahxjuahwjuahh',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form, triplet', () => {
+  test('check the standalone form, triplet', () => {
     expect(ms3[0].getForms()[0].literal).toEqual('juahh');
   });
 
-  test('check the uncombining form, triplet', () => {
+  test('check the standalone form, triplet', () => {
     expect(ms3[1].getForms()[0].literal).toEqual('juahh');
   });
 
   const ms4 = tonalLemmatizationAnalyzer.morphAnalyze(
     'juahwjuahh',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form, doublet', () => {
+  test('check the standalone form, doublet', () => {
     expect(ms4[0].getForms()[0].literal).toEqual('juahh');
   });
 });
 
-describe('Uncombining form testing, ay', () => {
+describe('Standalone form testing, ay', () => {
   const ms1 = tonalLemmatizationAnalyzer.morphAnalyze(
     'calxay',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form', () => {
+  test('check the standalone form', () => {
     expect(ms1[0].getForms()[0].literal).toEqual('catt');
   });
 
   const ms2 = tonalLemmatizationAnalyzer.morphAnalyze(
     'cagxay',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form', () => {
+  test('check the standalone form', () => {
     expect(ms2[0].getForms()[0].literal).toEqual('cakk');
   });
 
   const ms3 = tonalLemmatizationAnalyzer.morphAnalyze(
     'abxay',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form', () => {
+  test('check the standalone form', () => {
     expect(ms3[0].getForms()[0].literal).toEqual('app');
   });
 
   const ms4 = tonalLemmatizationAnalyzer.morphAnalyze(
     'cilfay',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form', () => {
+  test('check the standalone form', () => {
     expect(ms4[0].getForms()[0].literal).toEqual('cit');
   });
 
   const ms5 = tonalLemmatizationAnalyzer.morphAnalyze(
     'tegfay',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form', () => {
+  test('check the standalone form', () => {
     expect(ms5[0].getForms()[0].literal).toEqual('tek');
   });
 
   const ms6 = tonalLemmatizationAnalyzer.morphAnalyze(
     'kabfay',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form', () => {
+  test('check the standalone form', () => {
     expect(ms6[0].getForms()[0].literal).toEqual('kap');
   });
 
   const ms7 = tonalLemmatizationAnalyzer.morphAnalyze(
     'taiwtongxay',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form, 3-syllable word', () => {
+  test('check the standalone form, 3-syllable word', () => {
     expect(ms7[0].getForms()[0].literal).toEqual('taiz');
   });
 
   const ms8 = tonalLemmatizationAnalyzer.morphAnalyze(
     'ngzafthaixay',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form, 4-syllable word', () => {
+  test('check the standalone form, 4-syllable word', () => {
     expect(ms8[0].getForms()[1].literal).toEqual('ngx');
     expect(ms8[1].getForms()[0].literal).toEqual('ay');
   });
@@ -145,79 +145,79 @@ describe('Uncombining form testing, ay', () => {
 
 describe('Lemma testing, voiced final consonant followed by ay', () => {
   const lm1 = lemmatize('calx');
-  test('check the uncombining form', () => {
+  test('check the standalone form', () => {
     expect(lm1.getLemmas().map((x) => x.literal)[0]).toEqual('catt');
   });
 
   const lm2 = lemmatize('cagx');
-  test('check the uncombining form', () => {
+  test('check the standalone form', () => {
     expect(lm2.getLemmas().map((x) => x.literal)[0]).toEqual('cakk');
   });
 
   const lm3 = lemmatize('abx');
-  test('check the uncombining form', () => {
+  test('check the standalone form', () => {
     expect(lm3.getLemmas().map((x) => x.literal)[0]).toEqual('app');
   });
 });
 
-describe('Uncombining form testing, ietf or ietw to ek or ekk', () => {
+describe('Standalone form testing, ietf or ietw to ik or ikk', () => {
   const ms1 = tonalLemmatizationAnalyzer.morphAnalyze(
     'pietfkew',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form, changed rime', () => {
-    expect(ms1[0].getForms()[1].literal).toEqual('pek');
+  test('check the standalone form, changed rime', () => {
+    expect(ms1[0].getForms()[1].literal).toEqual('pik');
   });
 
   const ms2 = tonalLemmatizationAnalyzer.morphAnalyze(
     'pietwlienx',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form, changed rime', () => {
-    expect(ms2[0].getForms()[1].literal).toEqual('pekk');
+  test('check the standalone form, changed rime', () => {
+    expect(ms2[0].getForms()[1].literal).toEqual('pikk');
   });
 
   const ms3 = tonalLemmatizationAnalyzer.morphAnalyze(
     'pietwchong',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form, unchanged rime, changed tone', () => {
+  test('check the standalone form, unchanged rime, changed tone', () => {
     expect(ms3[0].getForms()[0].literal).toEqual('piett');
   });
 });
 
-describe('Uncombining form testing', () => {
+describe('Standalone form testing', () => {
   const ms1 = tonalLemmatizationAnalyzer.morphAnalyze(
-    'tikwteng',
-    new TonalUncombiningForms([])
+    'tikwting',
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form, tikw to tekk, changed rime', () => {
+  test('check the standalone form, tikw to tikk, changed rime', () => {
     expect(ms1[0].getForms()[0].literal).toEqual('tikk');
   });
 });
 
-describe('Uncombining form testing', () => {
+describe('Standalone form testing', () => {
   const ms1 = tonalLemmatizationAnalyzer.morphAnalyze(
     'jiwpowcitwlaw',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form for transfix, 4th checked syllable, citw to cit', () => {
+  test('check the standalone form for transfix, 4th checked syllable, citw to cit', () => {
     expect(ms1[2].getForms()[0].literal).toEqual('cit');
   });
 
   const ms2 = tonalLemmatizationAnalyzer.morphAnalyze(
     'tamwpurhwaw',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form for transfix, 8th checked syllable, purhw to purhh', () => {
+  test('check the standalone form for transfix, 8th checked syllable, purhw to purhh', () => {
     expect(ms2[1].getForms()[1].literal).toEqual('purhh');
   });
 
   const ms3 = tonalLemmatizationAnalyzer.morphAnalyze(
     'tangwsiwaw',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form for transfix, free syllable, siw to siy, six, siz', () => {
+  test('check the standalone form for transfix, free syllable, siw to siy, six, siz', () => {
     expect(ms3[1].getForms()[0].literal).toEqual('si');
     expect(ms3[1].getForms()[1].literal).toEqual('siy');
     expect(ms3[1].getForms()[2].literal).toEqual('six');
@@ -226,17 +226,17 @@ describe('Uncombining form testing', () => {
 
   const ms6 = tonalLemmatizationAnalyzer.morphAnalyze(
     'tnghwkhih',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form, 4th checked syllable, tnghw to tngh', () => {
+  test('check the standalone form, 4th checked syllable, tnghw to tngh', () => {
     expect(ms6[0].getForms()[0].literal).toEqual('tngh');
   });
 
   const ms7 = tonalLemmatizationAnalyzer.morphAnalyze(
     'kuehwlaih',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form, 4th checked syllable, kuehw to kueh', () => {
+  test('check the standalone form, 4th checked syllable, kuehw to kueh', () => {
     expect(ms7[0].getForms()[0].literal).toEqual('kueh');
   });
 });
@@ -289,30 +289,30 @@ describe('Lemma testing', () => {
   });
 });
 
-describe('Uncombining form testing, ~bwex, ~gwex, ~lwex', () => {
+describe('Standalone form testing, ~bwex, ~gwex, ~lwex', () => {
   const ms1 = tonalLemmatizationAnalyzer.morphAnalyze(
     'chabwex',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form, voiced to unvoiced', () => {
+  test('check the standalone form, voiced to unvoiced', () => {
     expect(ms1[0].getForms().length).toEqual(1);
     expect(ms1[0].getForms()[0].literal).toEqual('chapp');
   });
 
   const ms2 = tonalLemmatizationAnalyzer.morphAnalyze(
     'lagwex',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form, voiced to unvoiced', () => {
+  test('check the standalone form, voiced to unvoiced', () => {
     expect(ms2[0].getForms().length).toEqual(1);
     expect(ms2[0].getForms()[0].literal).toEqual('lakk');
   });
 
   const ms3 = tonalLemmatizationAnalyzer.morphAnalyze(
     'chilwex',
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
-  test('check the uncombining form, voiced to unvoiced', () => {
+  test('check the standalone form, voiced to unvoiced', () => {
     expect(ms3[0].getForms().length).toEqual(1);
     expect(ms3[0].getForms()[0].literal).toEqual('chitt');
   });
@@ -329,7 +329,7 @@ describe('Lemma testing, empty string as an argument, tonal', () => {
   });
 
   const soudnSeqs1 = tonalLemmatizationAnalyzer
-    .morphAnalyze(inputEmpty, new TonalUncombiningForms([]))
+    .morphAnalyze(inputEmpty, new TonalStandaloneForms([]))
     .map((x) => x.sounds);
   test('given empty string, check the letter literal', () => {
     expect(soudnSeqs1.length).toEqual(0);
@@ -364,7 +364,7 @@ describe('Lemma testing, undefined string as an argument, tonal', () => {
   });
 
   const soudnSeqs2 = tonalLemmatizationAnalyzer
-    .morphAnalyze(inputUnd, new TonalUncombiningForms([]))
+    .morphAnalyze(inputUnd, new TonalStandaloneForms([]))
     .map((x) => x.sounds);
   test('given undefined string, check the letter literal', () => {
     expect(soudnSeqs2.length).toEqual(0);

@@ -1,6 +1,6 @@
 import { TonalSpellingTags } from '../src/tonal/tonalres';
 import {
-  getUncombiningForms,
+  getStandaloneForms,
   analyzeIntoSequence,
   analyzeIntoSyllables,
   getLemmas,
@@ -19,7 +19,7 @@ describe('Utility testing', () => {
     expect(prs2[0][1]).toEqual(TonalSpellingTags.vowel);
   });
 
-  const frms = getUncombiningForms('o');
+  const frms = getStandaloneForms('o');
   test('check the uncombining forms', () => {
     expect(frms[0]).toEqual('oy');
   });
@@ -43,7 +43,7 @@ describe('Utility testing, empty input', () => {
     expect(prs2.length).toEqual(0);
   });
 
-  const frms = getUncombiningForms(inputEmpty);
+  const frms = getStandaloneForms(inputEmpty);
   test('check the uncombining forms', () => {
     expect(frms.length).toEqual(0);
   });
@@ -67,7 +67,7 @@ describe('Utility testing, undefined input', () => {
     expect(prs2.length).toEqual(0);
   });
 
-  const frms = getUncombiningForms(inputUnd);
+  const frms = getStandaloneForms(inputUnd);
   test('check the uncombining forms', () => {
     expect(frms.length).toEqual(0);
   });

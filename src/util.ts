@@ -2,7 +2,7 @@ import { Sound } from './unit';
 import { Client, TokenAnalysis } from './client';
 import { TonalWord } from './unchange/unit';
 import { tonalLemmatizationAnalyzer } from './unchange/analyzer';
-import { TonalUncombiningForms } from './unchange/metaplasm';
+import { TonalStandaloneForms } from './unchange/metaplasm';
 import { lemmatize } from './unchange/lemmatizer';
 import {
   basicSyllables,
@@ -40,7 +40,7 @@ export function analyzeIntoSyllables(input: string) {
 
   const pairs = getLetterSoundPairsSyllabic(
     tla
-      .morphAnalyze(wrd.literal, new TonalUncombiningForms([]))
+      .morphAnalyze(wrd.literal, new TonalStandaloneForms([]))
       .map((x) => x.sounds)
   );
 
@@ -57,7 +57,7 @@ export function analyzeIntoSequence(input: string) {
 
   const pairs = getLetterSoundPairsSequential(
     tla
-      .morphAnalyze(wrd.literal, new TonalUncombiningForms([]))
+      .morphAnalyze(wrd.literal, new TonalStandaloneForms([]))
       .map((x) => x.sounds)
   );
 
@@ -65,7 +65,7 @@ export function analyzeIntoSequence(input: string) {
 }
 
 /** Get the uncombining forms of a syllable. */
-export function getUncombiningForms(syl: string) {
+export function getStandaloneForms(syl: string) {
   if (!syl) return [];
   const cli = new Client();
   const tla = tonalLemmatizationAnalyzer;
@@ -73,7 +73,7 @@ export function getUncombiningForms(syl: string) {
   const wrd = ta.word as TonalWord;
 
   return tla
-    .morphAnalyze(wrd.literal, new TonalUncombiningForms([]))
+    .morphAnalyze(wrd.literal, new TonalStandaloneForms([]))
     .flatMap((mrfm) => mrfm.getForms().map((frm) => frm.literal));
 }
 

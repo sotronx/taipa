@@ -1,4 +1,4 @@
-import { TonalUncombiningMetaplasm } from '../metaplasm';
+import { TonalStandaloneMetaplasm } from '../metaplasm';
 import {
   TonalSyllable,
   TonalWord,
@@ -6,15 +6,15 @@ import {
   FreeInflectionalEnding,
   CheckedInflectionalEnding,
 } from './unit';
-import { TonalUncombiningMorpheme } from './morpheme';
+import { TonalStandaloneMorpheme } from './morpheme';
 import {
   Allomorph,
   FreeAllomorph,
   ZeroAllomorph,
-  freeAllomorphUncombiningRules,
+  freeAllomorphStandaloneRules,
   CheckedAllomorph,
   TonalLetterTags,
-  uncombiningRulesAy,
+  standaloneRulesAy,
   ZeroTonal,
   FreeTonalZ,
   FreeTonalX,
@@ -35,8 +35,8 @@ import {
 } from '../tonal/collections';
 import { isInSyllableTable } from '../tonal/syllablelists';
 
-/** Returns the uncombining forms of a syllable. */
-export class TonalUncombiningForms extends TonalUncombiningMetaplasm {
+/** Returns the standalone forms of a syllable. */
+export class TonalStandaloneForms extends TonalStandaloneMetaplasm {
   constructor(private soundsFollowing: Sound[]) {
     super();
   }
@@ -74,13 +74,13 @@ export class TonalUncombiningForms extends TonalUncombiningMetaplasm {
           const s: TonalSyllable = new TonalSyllable(
             sounds.map((x) => new AlphabeticLetter(x.characters))
           );
-          const tnltrs = freeAllomorphUncombiningRules.get('zero');
+          const tnltrs = freeAllomorphStandaloneRules.get('zero');
           if (tnltrs) s.pushLetter(new AlphabeticLetter(tnltrs[0].characters));
           return [s];
         } else {
           // the 7th tone has two baseforms
           const ret: TonalSyllable[] = [];
-          const rules = freeAllomorphUncombiningRules.get(allomorph.toString());
+          const rules = freeAllomorphStandaloneRules.get(allomorph.toString());
           const tnltrs = !rules ? [] : rules;
           for (let i in tnltrs) {
             const s: TonalSyllable = new TonalSyllable(
@@ -138,22 +138,24 @@ export class TonalUncombiningForms extends TonalUncombiningMetaplasm {
               // push the 8th final consonant if it is present in syllable table
               s.pushLetter(lowerLettersTonal.get(got));
             } else {
-              if (
-                s.letters.length === 2 &&
-                s.letters[0].literal === TonalLetterTags.t &&
-                s.letters[1].literal === TonalLetterTags.i &&
-                fnl === TonalLetterTags.k
-              ) {
-                // handle combining form 'tikw' of lexical root 'tekk'
-                // combining forms 'tietw' and 'tietf is handled in another function
-                s.popLetter(); // pop out vowel i
-                s.pushLetter(lowerLettersTonal.get(TonalLetterTags.e)); // push vowel e
-                s.pushLetter(lowerLettersTonal.get(TonalLetterTags.kk)); // push final consonant kk
-              } else {
-                // restore the popped-out final consonant.
-                // a syllable is just returned with its tone letter popped out
-                s.pushLetter(lowerLettersTonal.get(fnl));
-              }
+              // if (
+              //   s.letters.length === 2 &&
+              //   s.letters[0].literal === TonalLetterTags.t &&
+              //   s.letters[1].literal === TonalLetterTags.i &&
+              //   fnl === TonalLetterTags.k
+              // ) {
+              //   // handle combining form 'tikw' of lexical root 'tekk'
+              //   // combining forms 'tietw' and 'tietf is handled in another function
+              //   s.popLetter(); // pop out vowel i
+              //   s.pushLetter(lowerLettersTonal.get(TonalLetterTags.e)); // push vowel e
+              //   s.pushLetter(lowerLettersTonal.get(TonalLetterTags.kk)); // push final consonant kk
+              // } else {
+
+              // restore the popped-out final consonant.
+              // a syllable is just returned with its tone letter popped out
+              s.pushLetter(lowerLettersTonal.get(fnl));
+
+              // }
             }
           }
         } else if (
@@ -212,8 +214,8 @@ export class TonalUncombiningForms extends TonalUncombiningMetaplasm {
   }
 }
 
-/** Returns the uncombining forms of a phrasl verb particle syllable. */
-export class PhrasalVerbParticleUncombining extends TonalUncombiningMetaplasm {
+/** Returns the standalone forms of a phrasl verb particle syllable. */
+export class PhrasalVerbParticleStandalone extends TonalStandaloneMetaplasm {
   apply(sounds: Array<Sound>, allomorph: Allomorph): TonalSyllable[] {
     if (allomorph) {
       if (allomorph instanceof FreeAllomorph) {
@@ -251,9 +253,9 @@ export class PhrasalVerbParticleUncombining extends TonalUncombiningMetaplasm {
   }
 }
 
-/** Returns the uncombining forms of the syllable preceding ay */
-export class PrecedingAyUncombining extends TonalUncombiningMetaplasm {
-  private getUncombiningForms(syllable: TonalSyllable, letters: Array<Sound>) {
+/** Returns the standalone forms of the syllable preceding ay */
+export class PrecedingAyStandalone extends TonalStandaloneMetaplasm {
+  private getStandaloneForms(syllable: TonalSyllable, letters: Array<Sound>) {
     if (
       voicedVoicelessFinalConsonants.has(letters[letters.length - 2].toString())
     ) {
@@ -288,7 +290,7 @@ export class PrecedingAyUncombining extends TonalUncombiningMetaplasm {
       if (allomorph.tonal.toString() === TonalLetterTags.f) {
         if (allomorph instanceof FreeAllomorph) {
           const ret = [];
-          const rls = uncombiningRulesAy.get(allomorph.toString());
+          const rls = standaloneRulesAy.get(allomorph.toString());
           const tnls = !rls ? [] : rls;
           for (let i in tnls) {
             let s: TonalSyllable = new TonalSyllable(
@@ -307,14 +309,14 @@ export class PrecedingAyUncombining extends TonalUncombiningMetaplasm {
           );
           // pop f
           s.popLetter();
-          this.getUncombiningForms(s, sounds);
+          this.getStandaloneForms(s, sounds);
           return [s];
         }
       } else if (allomorph.tonal.toString() === TonalLetterTags.x) {
         // 5 to 1. 5 to 7. 5 to 5.
         if (allomorph instanceof FreeAllomorph) {
           const ret = [];
-          const rls = uncombiningRulesAy.get(allomorph.toString());
+          const rls = standaloneRulesAy.get(allomorph.toString());
           const tnls = !rls ? [] : rls;
           for (let i in tnls) {
             let s: TonalSyllable = new TonalSyllable(
@@ -345,7 +347,7 @@ export class PrecedingAyUncombining extends TonalUncombiningMetaplasm {
             sounds.map((it) => new AlphabeticLetter(it.characters))
           );
           s.popLetter(); // pop x
-          this.getUncombiningForms(s, sounds);
+          this.getStandaloneForms(s, sounds);
           return [s];
         }
       } else if (allomorph.tonal.toString() === TonalLetterTags.y) {
@@ -356,8 +358,8 @@ export class PrecedingAyUncombining extends TonalUncombiningMetaplasm {
   }
 }
 
-/** Returns the uncombining forms of the syllable preceding ex */
-export class PrecedingExUncombining extends TonalUncombiningMetaplasm {
+/** Returns the standalone forms of the syllable preceding ex */
+export class PrecedingExStandalone extends TonalStandaloneMetaplasm {
   private handleAssimilatedFinal(syllable: TonalSyllable): TonalSyllable[] {
     const finalConsonant = syllable.lastSecondLetter.literal;
     const fnlsOfLemma = finalConsonantsForBgjlsFw.get(
@@ -402,8 +404,8 @@ export class PrecedingExUncombining extends TonalUncombiningMetaplasm {
   }
 }
 
-/** Returns the last syllable of a double or triple construction as an uncombining form. */
-export class LastSyllableForms extends TonalUncombiningMetaplasm {
+/** Returns the last syllable of a double or triple construction as an standalone form. */
+export class LastSyllableForms extends TonalStandaloneMetaplasm {
   constructor(private lettersLastSyllable: Sound[]) {
     super();
   }
@@ -428,8 +430,8 @@ export class LastSyllableForms extends TonalUncombiningMetaplasm {
   }
 }
 
-/** Returns the uncombining forms of a transfix inflected syllable. */
-export class TransfixUncombining extends TonalUncombiningMetaplasm {
+/** Returns the standalone forms of a transfix inflected syllable. */
+export class TransfixStandalone extends TonalStandaloneMetaplasm {
   apply(sounds: Array<Sound>, allomorph: Allomorph): TonalSyllable[] {
     if (allomorph) {
       const vwlA = sounds.filter((it) => it.toString() === TonalLetterTags.a);
@@ -480,8 +482,8 @@ export class TransfixUncombining extends TonalUncombiningMetaplasm {
   }
 }
 
-/** Change ~ietf or ietw to ~ek or ~ekk. */
-export class UncombiningFormsIetfIetwToEkEkk extends TonalUncombiningMetaplasm {
+/** Change ~ietf or ietw to ~ik or ~ikk. */
+export class StandaloneFormsIetfIetwToIkIkk extends TonalStandaloneMetaplasm {
   apply(sounds: Array<Sound>, allomorph: Allomorph): TonalSyllable[] {
     if (allomorph) {
       const ics = sounds.filter(
@@ -493,7 +495,7 @@ export class UncombiningFormsIetfIetwToEkEkk extends TonalUncombiningMetaplasm {
           // in case of ~ietf
           const s: TonalSyllable = new TonalSyllable([
             new AlphabeticLetter(ics[0].characters),
-            lowerLettersTonal.get(TonalLetterTags.e),
+            lowerLettersTonal.get(TonalLetterTags.i),
             lowerLettersTonal.get(TonalLetterTags.k),
           ]);
           return [s];
@@ -501,7 +503,7 @@ export class UncombiningFormsIetfIetwToEkEkk extends TonalUncombiningMetaplasm {
           // in case of ~ietw
           const s: TonalSyllable = new TonalSyllable([
             new AlphabeticLetter(ics[0].characters),
-            lowerLettersTonal.get(TonalLetterTags.e),
+            lowerLettersTonal.get(TonalLetterTags.i),
             lowerLettersTonal.get(TonalLetterTags.kk),
           ]);
           return [s];
@@ -515,14 +517,14 @@ export class UncombiningFormsIetfIetwToEkEkk extends TonalUncombiningMetaplasm {
 /** Lemmatizes a word and returns its base forms. */
 export class TonalLemmatization extends TonalLemmatizationMetaplasm {
   apply(
-    morphemes: Array<TonalUncombiningMorpheme>,
+    morphemes: Array<TonalStandaloneMorpheme>,
     inflectionalEnding: InflectionalEnding
   ): TonalWord[] {
     return this.populateLemmata(morphemes, inflectionalEnding);
   }
 
   private getLemmas(
-    morphemes: Array<TonalUncombiningMorpheme>,
+    morphemes: Array<TonalStandaloneMorpheme>,
     inflectionalEnding: InflectionalEnding
   ): Array<TonalWord> {
     if (inflectionalEnding) {
@@ -550,7 +552,7 @@ export class TonalLemmatization extends TonalLemmatizationMetaplasm {
   }
 
   private populateLemmata(
-    morphemes: Array<TonalUncombiningMorpheme>,
+    morphemes: Array<TonalStandaloneMorpheme>,
     inflectionalEnding: InflectionalEnding
   ) {
     let lemmata: Array<TonalWord> = new Array();

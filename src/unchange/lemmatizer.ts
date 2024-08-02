@@ -1,7 +1,7 @@
 import { tonalLemmatizationAnalyzer } from './analyzer';
 import {
-  TonalUncombiningForms,
-  PhrasalVerbParticleUncombining,
+  TonalStandaloneForms,
+  PhrasalVerbParticleStandalone,
 } from './metaplasm';
 
 /**
@@ -11,7 +11,7 @@ import {
 export function lemmatize(word: string) {
   const ms = tonalLemmatizationAnalyzer.morphAnalyze(
     word,
-    new TonalUncombiningForms([])
+    new TonalStandaloneForms([])
   );
   const lx = tonalLemmatizationAnalyzer.lexAnalyze(ms);
   return lx;
@@ -24,7 +24,7 @@ export function lemmatize(word: string) {
 export function lemmatizePhrasalVerbParticle(word: string) {
   const ms = tonalLemmatizationAnalyzer.morphAnalyze(
     word,
-    new PhrasalVerbParticleUncombining()
+    new PhrasalVerbParticleStandalone()
   );
   const lx = tonalLemmatizationAnalyzer.lexAnalyze(ms);
   return lx;

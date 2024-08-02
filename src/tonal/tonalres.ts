@@ -993,7 +993,7 @@ export const combinedCheckedAllomorphs = new Map<string, Allomorph[]>()
   .set(TonalLetterTags.s + TonalLetterTags.f, [new AllomorphSF()])
   .set(TonalLetterTags.s + TonalLetterTags.w, [new AllomorphSW()]);
 
-export const freeAllomorphUncombiningRules = new Map<string, Tonal[]>()
+export const freeAllomorphStandaloneRules = new Map<string, Tonal[]>()
   .set(TonalLetterTags.f, [new FreeTonalY()])
   .set(TonalLetterTags.w, [new FreeTonalZ(), new FreeTonalX()])
   .set(TonalLetterTags.xx, [
@@ -1007,7 +1007,7 @@ export const freeAllomorphUncombiningRules = new Map<string, Tonal[]>()
   .set(TonalLetterTags.y, [new FreeTonalW()])
   .set(TonalLetterTags.zero, [new FreeTonalY()]);
 
-export const uncombiningRulesAy = new Map<string, Tonal[]>()
+export const standaloneRulesAy = new Map<string, Tonal[]>()
   .set(TonalLetterTags.f, [new FreeTonalY(), new FreeTonalW()])
   .set(TonalLetterTags.x, [
     new ZeroTonal(),

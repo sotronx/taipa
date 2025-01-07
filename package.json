@@ -1,6 +1,6 @@
 {
   "name": "taipa",
-  "version": "0.13.0",
+  "version": "0.13.1",
   "description": "Taiwanese morphological parsing library",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
